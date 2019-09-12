@@ -1,0 +1,40 @@
+library(readr)
+cap <- read_csv("C:/Users/Unitech1/Desktop/cap.csv")
+names(cap)
+sapply(cap,class)
+range(cap$LungCap)
+plot(cap$LungCap ,col=c("red"))
+class(cap$Age)
+plot(cap$Age)
+range(cap$Age)
+class(cap$Height)
+plot(cap$Height)
+range(cap$Height)
+class(cap$Smoke)
+table(cap$Smoke)
+smoke <- factor(cap$Smoke, levels = c("no","yes"), labels = c(0,1))
+cap$Smoke <- smoke
+class(cap$Gender)
+table(cap$Gender)
+gender <- factor(cap$Gender, levels = c("female","male"), labels = c(0,1))
+cap$Gender <- gender
+class(cap$Caesarean)
+table(cap$Caesarean)
+case <- factor(cap$Caesarean, levels = c("no","yes"), labels = c(0,1))
+cap$Caesarean <- case
+fix(cap)
+plot(cap$Caesarean , cap$LungCap)
+plot(cap$Caesarean , cap$Age)
+####applying logistic regression
+library(rpart)
+library(mlbench)
+set.seed(100)
+a = sample(nrow(cap),507)
+train=cap[a,]
+test=cap[-a,]
+part=rpart(Caesarean~.,data = train,method = "class")
+part
+library(rpart.plot)
+library(rattle)
+library(RColorBrewer)
+fancyRpartPlot(part, main = "Decission tree")

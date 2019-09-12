@@ -1,0 +1,26 @@
+library(ROCR)
+library(ResourceSelection)
+library(rpart)
+library(fmsb)
+getwd()
+setwd("D://Pranav")
+data<-read.csv("binary.csv")
+??set.seed
+set.seed(100)
+??nrow
+a<-sample(nrow(data),268)
+View(a)
+b<-data[-a,]
+train<-data[a,]
+test=b
+View(data)
+logreg<-glm(admit~gre+gpa+rank,family=binomial,data=data)
+summary(logreg)
+exp(coef(logreg))
+#confusion matrix
+Preer<-predict(logreg,newdata=subset(test,(select=c(1,15))),type='response')
+View(Preer)
+Preer<-ifelse(test>0.3,1,0)
+table(test,Preer)               
+prb<-prediction(Preer,test$admit)
+prfmnce<-performance(prb,measure=)

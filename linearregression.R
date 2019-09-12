@@ -1,0 +1,12 @@
+library(readr)
+r<-read.csv("D:\\PRANAV\\revenue.csv")
+s<-lm(Indian.revenue~Imports.income,data=r)
+s
+View(r)
+summary(s)
+t<-lm(Indian.revenue~Imports.income+Tax.income+Medical+Exports.income+Tourism,data=r)
+t
+summary(t)
+P<-lm(Indian.revenue~Imports.income+Exports.income-Medical-Tourism-Tax.income,data=r)
+P
+summary(P)
