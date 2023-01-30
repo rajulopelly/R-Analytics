@@ -1,0 +1,52 @@
+data(mtcars)
+df<-data.frame(mtcars)
+boxplot(df)
+
+# K-Means Cluster Analysis
+set.seed(100)
+fit <- kmeans(df, 4) 
+fit
+fit$withinss #intra cluster
+fit$betweenss #inter cluster
+fit$size 
+
+plot(df,col=fit$cluster,pch=15,)
+points(fit$centers,col=1:11,pch=3)
+
+# silhouette coeff - ASW
+library(cluster)
+dissE <- daisy(df) 
+dE2   <- dissE^2
+sk2   <- silhouette(fit$cl, dE2)
+plot(sk2)
+
+#Cluster Stats
+d <- dist(df, method = "euclidean") # distance matrix
+library(fpc)
+cluster.stats(d, fit$cluster)
+
+#Cluster validation
+library(fpc)
+plotcluster(df,fit$cluster)
+points(fit$centers,col=1:11,pch=16)
+
+
+# cluster means
+aggregate(df,by=list(fit$cluster),FUN=mean)
+
+# append cluster assignment
+df <- data.frame(df, fit$cluster) 
+head(df)
+
+# Cluster Plot against 1st 2 principal components
+# vary parameters for most readable graph
+
+library(cluster)
+clusplot(df, fit$cluster, 
+         color=TRUE, shade=TRUE,
+         labels=2, lines=0)
+
+
+
+
+

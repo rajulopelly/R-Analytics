@@ -1,0 +1,33 @@
+library(cluster)
+library(fpc)
+data("iris")
+View(iris)
+iris$Species<-NULL
+boxplot(iris)
+a<-scale(iris)
+boxplot(a)
+#elbow
+wss<-0
+k.max=10
+wss<- sapply(1:k.max,function(k){kmeans(a,k,nstart=50,iter.max =15)$tot.withinss})
+wss
+plot(1:k.max,wss,type = "b",pch=5,frame=FALSE)
+fix=kmeans(a,2)
+fix
+fix$withinss
+fix$betweenss
+fix$cluster
+plot(a,col=fix$cluster,pch=15)
+#silhotte coefficient
+b<-daisy(a)
+c<-b^2
+sk<-silhouette(fix$cl,c)
+plot(sk)
+#distance matrix
+d<-dist(a)
+d
+#cluster validation
+cluster.stats(c,fix$cluster)
+plotcluster(a,fix$cluster)
+clusplot(a,fix$cluster,colour=TRUE,shade=TRUE,labels=10,lines=0)
+############decision tree#############
